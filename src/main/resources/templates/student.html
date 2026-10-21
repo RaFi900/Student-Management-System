@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Student</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- Add Student Modal -->
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="custom-modal-header">
+                    <h5 class="modal-title" id="addStudentModalLabel">Add New Student</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body ">
+                    <form id="addStudentForm" th:action="@{/students}" th:object="${students}" method="post">
+                        <div class="row">
+                            <!-- Student ID -->
+                            <div class="col-md-4 mb-3">
+                                <label for="st_id" class="form-label">Student ID</label>
+                                <input th:field="*{st_id}" type="text" class="form-control" id="st_id" required>
+                            </div>
+
+                            <!-- Name -->
+                            <div class="col-md-4 mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input th:field="*{name}" type="text" class="form-control" id="name" required>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="col-md-4 mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input th:field="*{email}" type="email" class="form-control" id="email" required>
+                            </div>
+
+                            <!-- Mobile -->
+                            <div class="col-md-4 mb-3">
+                                <label for="mobile" class="form-label">Mobile</label>
+                                <input th:field="*{mobile}" type="tel" class="form-control" id="mobile" required>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="address" class="form-label">Address</label>
+                                <input th:field="*{address}" type="text" class="form-control" id="address"  required>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                                <input th:field="*{dateOfBirth}" type="date" class="form-control" id="dateOfBirth" required>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="gender" class="form-label">Gender</label>
+                                <select class="form-control" id="gender" th:field="*{gender}" required>
+                                    <option value="">Select</option>
+                                    <option th:each="g : ${Gender}"
+                                            th:value="${g}"
+                                            th:text="${g}">
+                                    </option>
+                                </select>
+
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="department" class="form-label">Department</label>
+                                <input th:field="*{department}" type="text" class="form-control" id="department" required>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="batch" class="form-label">Batch</label>
+                                <input th:field="*{batch}" type="text" class="form-control" id="batch" required>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer bg-dark-2">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="saveStudent">Save</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Student Modal -->
+    <div class="modal fade" id="updateStudentModal" tabindex="-1"
+         th:classappend="${showUpdateModal} ? 'show d-block' : ''"
+         th:style="${showUpdateModal} ? 'display: block;' : ''">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="custom-modal-header">
+                    <h5 class="modal-title">Update Student</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/updateStudent/{id}(id=${students.id})}" th:object="${students}" method="post">
+                        <input type="hidden" th:field="*{id}"/>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label>Student ID</label>
+                                <input th:field="*{st_id}" type="text" class="form-control" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Name</label>
+                                <input th:field="*{name}" type="text" class="form-control" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Email</label>
+                                <input th:field="*{email}" type="email" class="form-control" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Mobile</label>
+                                <input th:field="*{mobile}" type="tel" class="form-control" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Address</label>
+                                <input th:field="*{address}" type="text" class="form-control" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Date of Birth</label>
+                                <input th:field="*{dateOfBirth}" type="date" class="form-control" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="gender" class="form-label">Gender</label>
+                                <select class="form-control"  th:field="*{gender}" required>
+                                    <option value="">Select</option>
+                                    <option th:each="g : ${genders}"
+                                            th:value="${g}"
+                                            th:text="${g}">
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Department</label>
+                                <input th:field="*{department}" type="text" class="form-control" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Batch</label>
+                                <input th:field="*{batch}" type="text" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--    data table-->
+    <div class="container" style="margin-top: 50px">
+        <div class="container-fluid px-4">
+
+            <!-- filter start -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <select id="projectFilter" class="form-control"  onchange="applyProjectFilter()">
+                        <option value="">All student</option>
+                        <option th:each="student : ${studentList}"
+                                th:value="${student.st_id}"
+                                th:text="${student.st_id}">
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-4">
+                    <div class="col-auto" style="margin-left: 230px">
+                        <button type="button" class="btn bg-dark-2-lightest " data-bs-toggle="modal" data-bs-target="#addModal">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- filter end -->
+
+            <div class="card mb-4 bg-dark-2-lightest">
+                <div class="card-header bg-dark-2-lightest ">
+                    <i class="fas fa-table me-1"></i>
+                    student
+                </div>
+                <div class="card-body ">
+                    <table id="datatablesSimple" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Name</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Date of Birth</th>
+                            <th>Gender</th>
+                            <th>Department</th>
+                            <th>Batch</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+
+                        <tfoot>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Name</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Date of Birth</th>
+                            <th>Gender</th>
+                            <th>Department</th>
+                            <th>Batch</th>
+                            <th>Action</th>
+                        </tr>
+                        </tfoot>
+
+                        <tbody>
+                        <tr th:each="student : ${studentList}">
+                            <td th:text="${student.st_id}">Student ID</td>
+                            <td th:text="${student.name}">Name</td>
+                            <td th:text="${student.mobile}">Mobile</td>
+                            <td th:text="${student.email}">Email</td>
+                            <td th:text="${student.address}">Address</td>
+                            <td th:text="${student.dateOfBirth}">DOB</td>
+                            <td th:text="${student.gender}">Gender</td>
+                            <td th:text="${student.department}">Department</td>
+                            <td th:text="${student.batch}">Batch</td>
+                            <td>
+                                <a th:href="@{/editStudent/{id}(id=${student.id})}" class="btn btn-primary">Edit</a>
+                                <form th:action="@{/deleteStudent/{id}(id=${student.id})}" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Student?');">Delete</button>
+                                </form>
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById('saveStudent').addEventListener('click', function() {
+        // Save button click handler - you can add your save logic here later
+        console.log('Save button clicked');
+    });
+</script>
+
+</body>
+</html>

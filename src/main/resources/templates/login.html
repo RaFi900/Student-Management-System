@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+<!-- Mirrored from demo.dashboardpack.com/architectui-html-pro/pages-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 09 May 2025 16:20:26 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Login</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="ArchitectUI HTML Bootstrap 4 Dashboard Template">
+
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <link href="/css/styles.css" rel="stylesheet"/>
+    <link href="/css/main.d810cf0ae7f39f28f336.css" rel="stylesheet"></head>
+<style>
+    #loginAlertInvalid {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 320px;
+        padding: 12px 20px;
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        box-shadow: 0 4px 12px rgba(114, 28, 36, 0.2);
+        border-radius: 8px;
+        font-size: 1em;
+        font-weight: 500;
+        opacity: 1;
+        z-index: 1050;
+    }
+
+</style>
+<body>
+<div class="app-container app-theme-white body-tabs-shadow">
+    <div class="app-container">
+        <div class="h-100">
+            <div class="h-100 no-gutters row">
+                <div class="d-none d-lg-block col-lg-4">
+                    <div class="slider-light">
+                        <div class="slick-slider">
+                            <div>
+                                <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-dark-1" tabindex="-1">
+                                    <div class="slide-img-bg"  th:style="|background-image: url('@{/assets/img/students.jpg}');|"></div>
+                                    <div style="color: white" class="slider-content">
+                                        <h3>Empower Learning and Management</h3>
+                                        <p>
+                                            Our system bridges the gap between students and administrators, providing an easy way to access academic information, track progress, and manage records efficiently.
+                                            From course details to performance insights, it supports growth, organization, and success for everyone.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="h-100 d-flex bg-dark-2-modal-lightest justify-content-center align-items-center col-md-12 col-lg-8">
+                    <div class="mx-auto app-login-box col-sm-12 col-md-10 col-lg-9">
+                        <div class="app-logo"></div>
+
+
+                        <div th:if="${errorMessage}"
+                             id="loginAlertInvalid"
+                             class="alert alert-danger px-4 py-2"
+                             role="alert"
+                             style="font-size: 1em;">
+                            ❌ <strong th:text="${errorMessage}"></strong>
+                        </div>
+
+
+                        <h4 class="mb-0">
+                            <span class="d-block">Welcome back,</span>
+                            <span>Please sign in to your account.</span>
+                        </h4>
+
+                   <!-- <h6 class="mt-3">If you have no account? <a href="register" class="text-primary">Sign up now</a></h6>-->
+                        <div class="divider row"></div>
+                        <div>
+                            <form th:action="@{/login}" th:object="${login}" method="post">
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <div class="position-relative form-group">
+                                            <label for="email">Email</label>
+                                            <input th:field="*{email}" id="email" placeholder="Email here..." type="email" class="form-control" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="position-relative form-group">
+                                            <label for="password">Password</label>
+                                            <input th:field="*{password}" id="password" placeholder="Password here..." type="password" class="form-control" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h5 class="mb-0">
+                                    Don't have an account?
+                                    <a th:href="@{register}" class=" text-decoration-none ">Sign up</a>
+                                </h5>
+                                <div class="divider row"></div>
+
+                                <button type="submit" class="btn btn-primary">Log In</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<script type="text/javascript" src="/static/main.d810cf0ae7f39f28f336.js"></script>-->
+
+<!--<script type="text/javascript" src="/static/js.js"></script>-->
+
+<script th:if="${errorMessage}">
+    function autoDismissAlert(alertId, delay = 3000, fadeDuration = 500) {
+        const alertBox = document.getElementById(alertId);
+        if (alertBox) {
+            setTimeout(() => {
+                alertBox.style.transition = `opacity ${fadeDuration}ms ease-out`;
+                alertBox.style.opacity = "0";
+
+                setTimeout(() => {
+                    alertBox.remove();
+                }, fadeDuration + 100);
+            }, delay);
+        }
+    }
+    autoDismissAlert('loginAlertInvalid', 3000, 500);
+</script>
+
+</body>
+
+
+<!-- Mirrored from demo.dashboardpack.com/architectui-html-pro/pages-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 09 May 2025 16:20:29 GMT -->
+</html>

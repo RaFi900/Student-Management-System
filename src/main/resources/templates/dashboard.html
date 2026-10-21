@@ -1,0 +1,148 @@
+!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Dashboard</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <style>
+        .card {
+            background-color: #2c3e50;
+            border-radius: 8px;
+            padding: 1rem;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+        .card-footer {
+            background: transparent;
+            padding-top: 0.5rem;
+        }
+        .recent-activity {
+            background-color: #34495e;
+            border-radius: 8px;
+            padding: 1rem;
+            color: white;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .recent-activity h5 {
+            margin-bottom: 1rem;
+        }
+        .recent-activity ul {
+            padding-left: 1rem;
+            list-style-type: disc;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <main>
+        <div class="container-fluid px-4">
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active" style="margin-top: 5px">Dashboard</li>
+            </ol>
+
+            <div class="row">
+                <div class="col-xl-3 col-md-6 col-sm-12">
+                    <div class="card text-white mb-4">
+                        <div class="card-body">
+                            <h5>Total Students</h5>
+                            <h2 th:text="${totalStudents}">0</h2>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small text-white stretched-link" href="students">View Details</a>
+                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 col-sm-12">
+                    <div class="card text-white mb-4">
+                        <div class="card-body">
+                            <h5>Total Instructors</h5>
+                            <h2 th:text="${totalInstructors}">0</h2>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small text-white stretched-link" href="instructors">View Details</a>
+                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 col-sm-12">
+                    <div class="card text-white mb-4">
+                        <div class="card-body">
+                            <h5>Total Courses</h5>
+                            <h2 th:text="${totalCourses}">0</h2>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small text-white stretched-link" href="courses">View Details</a>
+                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-xl-3 col-md-6 col-sm-12">
+                    <div class="card text-white mb-4">
+                        <div class="card-body">
+                            <h5>Advising Entries</h5>
+                            <h2 th:text="${totalAdvising}">0</h2>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <a class="small text-white stretched-link" href="course_advising">View Details</a>
+                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Bar Chart -->
+            <div class="row">
+                <div class="col-xl-8 col-lg-12 flex items-center justify-center h-screen">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-chart-bar me-1"></i>Student & Instructor Counts
+                        </div>
+                        <div class="card-body">
+                            <div id="container" style="width: 100%; height: 400px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--                &lt;!&ndash; Recent Activity &ndash;&gt;-->
+                <!--                <div class="col-xl-4 col-lg-12">-->
+                <!--                    <div class="recent-activity">-->
+                <!--                        <h5>Recent Activities</h5>-->
+                <!--                        <ul>-->
+                <!--                            <li th:each="activity : ${recentActivities}" th:text="${activity}">Sample activity</li>-->
+                <!--                        </ul>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+            </div>
+        </div>
+    </main>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var dataPoints = /*[[${dataPoints}]]*/ [];
+
+        Highcharts.chart('container', {
+            chart: { type: 'column' },
+            title: { text: 'Student & Instructor Counts' },
+            xAxis: {
+                categories: dataPoints.map(function(dp) { return dp.category; })
+            },
+            yAxis: {
+                title: { text: 'Count' }
+            },
+            series: [{
+                name: 'Total',
+                data: dataPoints.map(function(dp) { return dp.value; })
+            }]
+        });
+        /*]]>*/
+    </script>
+</div>
+</body>
+</html>

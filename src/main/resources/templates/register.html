@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+<!-- Mirrored from demo.dashboardpack.com/architectui-html-pro/pages-register.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 09 May 2025 16:20:29 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Register </title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <meta name="description" content="ArchitectUI HTML Bootstrap 4 Dashboard Template">
+
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+    <link href="/css/styles.css" rel="stylesheet"/>
+    <link href="/css/main.d810cf0ae7f39f28f336.css" rel="stylesheet"></head>
+<body>
+<div class="app-container app-theme-white body-tabs-shadow">
+    <div class="app-container">
+        <div class="h-100">
+            <div class="h-100 no-gutters row">
+                <div
+                        class="h-100 d-md-flex d-sm-block bg-dark-2-modal-lightest justify-content-center align-items-center col-md-12 col-lg-7">
+                    <div class="mx-auto app-login-box col-sm-12 col-md-10 col-lg-9">
+                        <div class="app-logo"></div>
+                        <h4>
+                            <div>Welcome,</div>
+                            <span>It only takes a <span class="text-success">few seconds</span> to create your account</span>
+                        </h4>
+                        <div>
+                            <form th:action="@{/register}" th:object="${user}" method="post">
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <div class="position-relative form-group">
+                                            <label for="email"><span class="text-danger">*</span> Email</label>
+                                            <input th:field="*{email}" id="email" placeholder="Email here..." type="email" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="position-relative form-group">
+                                            <label for="name">Name</label>
+                                            <input th:field="*{name}" id="name" placeholder="Name here..." type="text" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="position-relative form-group">
+                                            <label for="password"><span class="text-danger">*</span> Password</label>
+                                            <input th:field="*{password}" id="password" placeholder="Password here..." type="password" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="position-relative form-group">
+                                            <label for="mobile">Mobile</label>
+                                            <input th:field="*{mobile}" id="mobile" placeholder="Mobile here..." type="text" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!--error msg-->
+                                <div>
+                                    <p th:if="${error}" style="color: red;">[[${error}]]</p>
+                                </div>
+
+                                <div class="mt-4 d-flex align-items-center">
+                                    <h5 class="mb-0">
+                                        Already have an account?
+                                        <a th:href="@{/login}" class="text-primary">Sign in</a>
+                                    </h5>
+                                    <div class="ml-auto">
+                                        <button type="submit" class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg">
+                                            Create Account
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                <!--image-->
+                <div class="d-lg-flex d-xs-none col-lg-5">
+                    <div class="slider-light">
+                        <div class="slick-slider">
+                            <div>
+                                <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-dark-1" tabindex="-1">
+                                    <div class="slide-img-bg"  th:style="|background-image: url('@{/assets/img/students.jpg}');|"></div>
+                                    <div style="color: white" class="slider-content">
+                                        <h3>Open a Profile, Unlock Potential</h3>
+                                        <p>
+                                            Every student record tells a story. From enrollment details to academic achievements,
+                                            the system empowers learning, growth, and seamless management for both students and administrators.
+                                        </p>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/scripts/main.d810cf0ae7f39f28f336.js"></script></body>
+
+
+<!-- Mirrored from demo.dashboardpack.com/architectui-html-pro/pages-register.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 09 May 2025 16:20:29 GMT -->
+</html>

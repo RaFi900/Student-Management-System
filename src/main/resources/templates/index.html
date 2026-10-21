@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Management System</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('/assets/img/books.png') no-repeat center center fixed;
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      color: white;
+    }
+
+    header {
+      display: none; 
+    }
+
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 0 20px;
+      box-sizing: border-box;
+    }
+
+    /* Hero content */
+    .hero {
+      max-width: 650px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 12px;
+      padding: 50px 30px;
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+    }
+
+    .btn {
+      background-color: #001f4d; 
+      color: #fff;
+      padding: 12px 30px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+      display: inline-block;
+    }
+
+    .btn:hover {
+      background-color: #004080;
+      color: #fff;
+      box-shadow: 0 0 10px rgba(0, 64, 128, 0.8);
+      transform: scale(1.05);
+    }
+
+    .fade-out {
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <!-- Center Hero -->
+    <section class="hero">
+      <h2>Smart. Simple. Student Management.</h2>
+      <p>An easy-to-use platform to keep track of every student’s journey—from day one to graduation.</p>
+      <a href="register" id="getStartedBtn" class="btn">Get Started</a>
+    </section>
+  </main>
+
+  <script>
+    const btn = document.getElementById('getStartedBtn');
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      btn.classList.add('fade-out');
+      setTimeout(() => {
+        window.location.href = btn.href;
+      }, 500);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}">
+<head>
+    <title>Course</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- Add Course Modal -->
+    <div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="addCourseModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="custom-modal-header">
+                    <h5 class="modal-title" id="addCourseModalLabel">Add New Course</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCourseForm" th:action="@{/courses}" th:object="${course}" method="post">
+                        <div class="row">
+                            <!-- Course Code -->
+                            <div class="col-md-6 mb-3">
+                                <label for="courseCode" class="form-label">Course Code</label>
+                                <input th:field="*{courseCode}" type="text" class="form-control" id="courseCode" required>
+                            </div>
+
+                            <!-- Course Name -->
+                            <div class="col-md-6 mb-3">
+                                <label for="courseName" class="form-label">Course Name</label>
+                                <input th:field="*{courseName}" type="text" class="form-control" id="courseName" required>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="col-md-6 mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea th:field="*{description}" class="form-control" id="description" rows="2"></textarea>
+                            </div>
+
+                            <!-- Credits -->
+                            <div class="col-md-6 mb-3">
+                                <label for="credits" class="form-label">Credits</label>
+                                <input th:field="*{credits}" type="number" class="form-control" id="credits" required>
+                            </div>
+
+                            <!-- Department -->
+                            <div class="col-md-6 mb-3">
+                                <label for="department" class="form-label">Department</label>
+                                <input th:field="*{department}" type="text" class="form-control" id="department" required>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer bg-dark-2">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="saveCourse">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Course Modal -->
+    <div class="modal fade" id="updateCourseModal" tabindex="-1"
+         th:classappend="${showUpdateModal} ? 'show d-block' : ''"
+         th:style="${showUpdateModal} ? 'display: block;' : ''">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="custom-modal-header">
+                    <h5 class="modal-title">Update Course</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/updateCourse/{id}(id=${course.id})}" th:object="${course}" method="post">
+                        <input type="hidden" th:field="*{id}"/>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>Course Code</label>
+                                <input th:field="*{courseCode}" class="form-control" required/>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Course Name</label>
+                                <input th:field="*{courseName}" class="form-control" required/>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Description</label>
+                                <textarea th:field="*{description}" class="form-control"></textarea>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Credits</label>
+                                <input th:field="*{credits}" type="number" class="form-control" required/>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Department</label>
+                                <input th:field="*{department}" class="form-control" required/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Table -->
+    <div class="container" style="margin-top: 50px">
+        <div class="container-fluid px-4">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <select id="courseFilter" class="form-control" onchange="applyProjectFilter()">
+                        <option value="">All Courses</option>
+                        <option th:each="c : ${courseList}"
+                                th:value="${c.courseName}"
+                                th:text="${c.courseName}">
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="col-auto" style="margin-left: 230px" sec:authorize="hasRole('ADMIN')">
+                        <button type="button" class="btn bg-dark-2-lightest" data-bs-toggle="modal" data-bs-target="#addCourseModal">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4 bg-dark-2-lightest">
+                <div class="card-header bg-dark-2-lightest">
+                    <i class="fas fa-table me-1"></i>
+                    Courses
+                </div>
+                <div class="card-body">
+                    <table id="datatablesSimple" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Course Code</th>
+                            <th>Course Name</th>
+                            <th>Description</th>
+                            <th>Credits</th>
+                            <th>Department</th>
+                            <th sec:authorize="hasRole('ADMIN')">Action</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>Course Code</th>
+                            <th>Course Name</th>
+                            <th>Description</th>
+                            <th>Credits</th>
+                            <th>Department</th>
+                            <th sec:authorize="hasRole('ADMIN')">Action</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        <tr th:each="c : ${courseList}">
+                            <td th:text="${c.courseCode}">Course Code</td>
+                            <td th:text="${c.courseName}">Course Name</td>
+                            <td th:text="${c.description}">Description</td>
+                            <td th:text="${c.credits}">Credits</td>
+                            <td th:text="${c.department}">Department</td>
+                            <td sec:authorize="hasRole('ADMIN')">
+                                <a th:href="@{/editCourse/{id}(id=${c.id})}" class="btn btn-primary">Edit</a>
+                                <form th:action="@{/deleteCourse/{id}(id=${c.id})}" method="post" style="display:inline;"  >
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Course?');">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('saveCourse').addEventListener('click', function() {
+        console.log('Save Course button clicked');
+    });
+</script>
+
+</body>
+</html>

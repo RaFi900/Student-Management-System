@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Client</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <!--main-->
+
+    <!-- Add Course Advising Modal -->
+    <div class="modal fade" id="addAdvisingModal" tabindex="-1" aria-labelledby="addAdvisingModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="custom-modal-header">
+                    <h5 class="modal-title" id="addAdvisingModalLabel">Add Course Advising</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addAdvisingForm" th:action="@{/course-advising}" th:object="${courseAdvising}" method="post">
+                        <div class="row">
+                            <!-- Student -->
+                            <div class="col-md-6 mb-3">
+                                <label for="student" class="form-label">Student</label>
+                                <select th:field="*{student}" class="form-control" id="student" required>
+                                    <option value="">Select Student</option>
+                                    <option th:each="s : ${students}" th:value="${s.id}" th:text="${s.name}"></option>
+
+                                </select>
+                            </div>
+
+                            <!-- Course -->
+                            <div class="col-md-6 mb-3">
+                                <label for="course" class="form-label">Course</label>
+                                <select th:field="*{advisedCourses}" class="form-control" id="course" required>
+                                    <option value="">Select Course</option>
+                                    <option th:each="c : ${advisedCourses}"
+                                            th:value="${c.id}"
+                                            th:text="${c.courseName}">
+                                    </option>
+                                </select>
+                            </div>
+
+
+                            <!-- Instructor -->
+                            <div class="col-md-6 mb-3">
+                                <label for="instructor" class="form-label">Instructor</label>
+                                <select th:field="*{instructor}" class="form-control" id="instructor" required>
+                                    <option value="">Select Instructor</option>
+                                    <option th:each="i : ${instructors}" th:value="${i.id}" th:text="${i.name}"></option>
+                                </select>
+                            </div>
+
+                            <!-- Approved Checkbox -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Approved</label>
+                                <div class="form-check">
+                                    <input th:field="*{approved}" class="form-check-input" type="checkbox" id="approved">
+                                    <label class="form-check-label" for="approved">Approved</label>
+                                </div>
+                            </div>
+
+                            <!-- Advising Date -->
+                            <div class="col-md-6 mb-3">
+                                <label for="advisingDate" class="form-label">Advising Date</label>
+                                <input th:field="*{advisingDate}" type="date" class="form-control" id="advisingDate" required>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer bg-dark-2">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="saveAdvising">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Course Advising Modal -->
+    <div class="modal fade" id="updateAdvisingModal" tabindex="-1"
+         th:classappend="${showUpdateModal} ? 'show d-block' : ''"
+         th:style="${showUpdateModal} ? 'display: block;' : ''">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="custom-modal-header">
+                    <h5 class="modal-title">Update Course Advising</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/updateCourseAdvising/{id}(id=${courseAdvising.id})}" th:object="${courseAdvising}" method="post">
+                        <input type="hidden" th:field="*{id}"/>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>Student</label>
+                                <select th:field="*{student}" class="form-control" required>
+                                    <option th:each="s : ${studentList}" th:value="${s.id}" th:text="${s.name}" th:selected="${s.id} == ${courseAdvising.student.id}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Course</label>
+                                <select th:field="*{advisedCourses}" class="form-control" required>
+                                    <option th:each="c : ${courseList}" th:value="${c.id}" th:text="${c.courseName}" th:selected="${c.id} == ${courseAdvising.advisedCourses.id}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Instructor</label>
+                                <select th:field="*{instructor}" class="form-control" required>
+                                    <option th:each="i : ${instructorList}" th:value="${i.id}" th:text="${i.name}" th:selected="${i.id} == ${courseAdvising.instructor.id}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Approved</label>
+                                <div class="form-check">
+                                    <input th:field="*{approved}" class="form-check-input" type="checkbox" id="approvedUpdate">
+                                    <label class="form-check-label" for="approvedUpdate">Approved</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Advising Date</label>
+                                <input th:field="*{advisingDate}" type="date" class="form-control" required/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Table -->
+    <div class="container" style="margin-top: 50px">
+        <div class="container-fluid px-4">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <div class="col-auto" style="margin-left: 230px">
+                        <button type="button" class="btn bg-dark-2-lightest" data-bs-toggle="modal" data-bs-target="#addAdvisingModal">
+                            <i class="fas fa-plus"></i> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4 bg-dark-2-lightest">
+                <div class="card-header bg-dark-2-lightest">
+                    <i class="fas fa-table me-1"></i>
+                    Course Advising
+                </div>
+                <div class="card-body">
+                    <table id="datatablesAdvising" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Course</th>
+                            <th>Instructor</th>
+                            <th>Approved</th>
+                            <th>Advising Date</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="ca : ${advisingList}">
+                            <td th:text="${ca.student.name}">Student</td>
+                            <td th:text="${ca.advisedCourses.courseName}">Course</td>
+                            <td th:text="${ca.instructor.name}">Instructor</td>
+                            <td th:text="${ca.approved} ? 'Yes' : 'No'">Approved</td>
+                            <td th:text="${ca.advisingDate}">Date</td>
+                            <td>
+                                <a th:href="@{/editCourseAdvising/{id}(id=${ca.id})}" class="btn btn-primary">Edit</a>
+                                <form th:action="@{/deleteCourseAdvising/{id}(id=${ca.id})}" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this entry?');">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--main end-->
+</div>
+<script>
+    document.getElementById('saveClient').addEventListener('click', function() {
+        // Save button click handler - you can add your save logic here later
+        console.log('Save button clicked');
+    });
+</script>
+
+</body>
+</html>
